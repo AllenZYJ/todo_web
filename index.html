@@ -169,7 +169,7 @@
 
         .accordion-content li {
             list-style-type: none;
-            border-bottom: 1px solid #ddd;
+            border-bottom: none;
             padding: 12px;
             display: flex;
             align-items: center;
@@ -210,28 +210,65 @@
         .delete-all-button:hover {
             background-color: #da1e0a;
         }
+        .quick-inputs {
+            opacity: 0;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 100%;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            padding: 5px;
+            z-index: 1;
+            transform-origin: top;
+            transform: scaleY(0);
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            margin-top: 150px;
+        }
+
+        .quick-inputs.show {
+            opacity: 1;
+            transform: scaleY(1);
+        }
+
+
+        .quick-inputs button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: block;
+            font-size: 1rem;
+            padding: 5px 10px;
+            text-align: left;
+            width: 100%;
+            border-bottom: none; /* 移除底部边框 */
+        }
+
+
             </style>
             </head>
             <body>
             <div class="container">
             <h1>Todo List</h1>
-            <div id="add-todo">
-            <input type="text" id="todo-input" placeholder="请输入待办事项...">
-            <button id="submit-button">+</button>
+            <div id="add-todo" style="position: relative;">
+                <input type="text" id="todo-input" placeholder="请输入待办事项...">
+                <button id="submit-button">+</button>
+                <div id="quick-inputs" class="quick-inputs"></div>
             </div>
+            
             <div class="tabs">
             <div id="tab-todo" class="tab active">待办事项</div>
+
             <div id="tab-done" class="tab">已完成</div>
             </div>
             <ul id="todo-list"></ul>
             </div>
+
             <script>
                 const todoInput = document.getElementById('todo-input');
                 const submitButton = document.getElementById('submit-button');
                 const todoList = document.getElementById('todo-list');
                 const tabTodo = document.getElementById('tab-todo');
                 const tabDone = document.getElementById('tab-done');
-                const apiUrl = 'http://8.130.73.40:2170'
+                const apiUrl = 'http://localhost:8080'
                 todoInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 addTodo();
@@ -255,6 +292,7 @@
                         });
                     }
                 }
+
                 let currentTab = 'todo';
                 tabTodo.addEventListener('click', () => {
                     currentTab = 'todo';
@@ -375,7 +413,7 @@
                     deleteButtons.forEach(button => {
                         button.addEventListener('click', async (e) => {
                             const index = parseInt(e.target.getAttribute('data-index'), 10);
-                            if (confirm('确定要删除这个事项吗？')) {
+                            if (confirm('Delete it?')) {
                                 const response = await fetch(`${apiUrl}/todos/${index}`, {
                                     method: 'DELETE'
                                 });
@@ -391,7 +429,7 @@
                     deleteAllButtons.forEach(button => {
                         button.addEventListener('click', async (e) => {
                             const date = e.target.getAttribute('data-date');
-                            if (confirm(`确定要删除 ${date} 的所有事项吗？`)) {
+                            if (confirm(`Delete date of ${date} all todos ？`)) {
                                 const formattedDate = new Date(date).toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
                                 const response = await fetch(`${apiUrl}/todos/delete_all/${formattedDate}`, {
                                     method: 'DELETE'
@@ -407,6 +445,28 @@
                 document.addEventListener('DOMContentLoaded', () => {
                     updateTodoList();
                 });
+                const quickInputs = document.getElementById('quick-inputs');
+                const quickInputOptions = ['快捷选项1', '快捷选项2', '快捷选项3'];
+
+                quickInputOptions.forEach(option => {
+                    const button = document.createElement('button');
+                    button.textContent = option;
+                    button.addEventListener('click', () => {
+                        todoInput.value = button.textContent;
+                    });
+                    quickInputs.appendChild(button);
+                });
+
+                todoInput.addEventListener('focus', () => {
+                    quickInputs.classList.add('show');
+                });
+
+                todoInput.addEventListener('blur', () => {
+                    setTimeout(() => {
+                        quickInputs.classList.remove('show');
+                    }, 150);
+                });
+
                 </script>
             </body>
             </html>
