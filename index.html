@@ -8,6 +8,52 @@
     <title>Todo List</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+@media (max-width: 768px) {
+    .container {
+        margin: 30px 20px;
+        padding: 15px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    #add-todo {
+        flex-direction: row;
+        margin-bottom: 1rem;
+    }
+    #todo-input {
+        flex-grow: 1;
+    }
+    #submit-button {
+        margin-top: 0;
+        margin-left: 1rem;
+    }
+    .tabs {
+        flex-direction: column;
+    }
+    .tab {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.2rem;
+    }
+    #add-todo {
+        flex-direction: row;
+    }
+    #todo-input {
+        font-size: 0.9rem;
+    }
+    #submit-button {
+        font-size: 0.9rem;
+    }
+    .tab {
+        font-size: 0.9rem;
+    }
+}
+
+
         body {
             font-family: 'Roboto', Arial, sans-serif;
             background-color: #f0f2f5;
@@ -185,6 +231,7 @@
                 const todoList = document.getElementById('todo-list');
                 const tabTodo = document.getElementById('tab-todo');
                 const tabDone = document.getElementById('tab-done');
+                const apiUrl = 'http://8.130.73.40:2170'
                 todoInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 addTodo();
@@ -196,7 +243,7 @@
                 function addTodo() {
                     const todoText = todoInput.value.trim();
                     if (todoText) {
-                        fetch('http://0.0.0.0:2000/todos', {
+                        fetch(`${apiUrl}/todos`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -226,7 +273,7 @@
                 submitButton.addEventListener('click', () => {
                     const todoText = todoInput.value.trim();
                     if (todoText) {
-                        fetch('http://0.0.0.0:2000/todos', {
+                        fetch(`${apiUrl}/todos`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -284,7 +331,7 @@
 
                 
                 async function updateTodoList() {
-                    const res = await fetch('http://0.0.0.0:2000/todos');
+                    const res = await fetch(`${apiUrl}/todos`);
                     const data = await res.json();
                     const filteredTodos = data.todos.map((todo, index) => ({ ...todo, index })).filter(todo => todo.done === (currentTab === 'done'));
                     const groupedTodos = groupByDate(filteredTodos);
@@ -312,7 +359,7 @@
                         checkbox.addEventListener('change', async (e) => {
                             const index = parseInt(e.target.getAttribute('data-index'), 10);
                             const updatedTodo = { ...data.todos[index], done: e.target.checked };
-                            const response = await fetch(`http://0.0.0.0:2000/todos/${index}`, {
+                            const response = await fetch(`${apiUrl}/todos/${index}`, {
                                 method: 'PUT',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -329,7 +376,7 @@
                         button.addEventListener('click', async (e) => {
                             const index = parseInt(e.target.getAttribute('data-index'), 10);
                             if (confirm('确定要删除这个事项吗？')) {
-                                const response = await fetch(`http://0.0.0.0:2000/todos/${index}`, {
+                                const response = await fetch(`${apiUrl}/todos/${index}`, {
                                     method: 'DELETE'
                                 });
                                 if (response.ok) {
@@ -346,7 +393,7 @@
                             const date = e.target.getAttribute('data-date');
                             if (confirm(`确定要删除 ${date} 的所有事项吗？`)) {
                                 const formattedDate = new Date(date).toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
-                                const response = await fetch(`http://0.0.0.0:2000/todos/delete_all/${formattedDate}`, {
+                                const response = await fetch(`${apiUrl}/todos/delete_all/${formattedDate}`, {
                                     method: 'DELETE'
                                 });
                                 if (response.ok) {
@@ -357,7 +404,9 @@
                     });
 
                 }
-                
+                document.addEventListener('DOMContentLoaded', () => {
+                    updateTodoList();
+                });
                 </script>
             </body>
             </html>
