@@ -1,59 +1,81 @@
-
-
 <!DOCTYPE html>
 <html lang="zh-cn">
+
 <head>
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-@media (max-width: 768px) {
-    .container {
-        margin: 30px 20px;
-        padding: 15px;
-    }
-    h1 {
-        font-size: 1.5rem;
-    }
-    #add-todo {
-        flex-direction: row;
-        margin-bottom: 1rem;
-    }
-    #todo-input {
-        flex-grow: 1;
-    }
-    #submit-button {
-        margin-top: 0;
-        margin-left: 1rem;
-    }
-    .tabs {
-        flex-direction: column;
-    }
-    .tab {
-        margin-bottom: 10px;
-    }
-}
+        @media (max-width: 768px) {
+            .container {
+                margin: 30px 20px;
+                padding: 15px;
+            }
 
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.2rem;
-    }
-    #add-todo {
-        flex-direction: row;
-    }
-    #todo-input {
-        font-size: 0.9rem;
-    }
-    #submit-button {
-        font-size: 0.9rem;
-    }
-    .tab {
-        font-size: 0.9rem;
-    }
-}
+            h1 {
+                font-size: 1.5rem;
+            }
 
+            #add-todo {
+                flex-direction: row;
+                margin-bottom: 1rem;
+            }
+
+            #todo-input {
+                flex-grow: 1;
+            }
+
+            #submit-button {
+                margin-top: 0;
+                margin-left: 1rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            #add-todo {
+                flex-direction: row;
+            }
+
+            #todo-input {
+                font-size: 0.9rem;
+            }
+
+            #submit-button {
+                font-size: 0.9rem;
+            }
+
+            .tab {
+                font-size: 0.9rem;
+            }
+        }
+
+        .fade-out {
+            animation: fade-out 0.2s linear forwards;
+        }
+
+        @keyframes fade-out {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
 
         body {
             font-family: 'Roboto', Arial, sans-serif;
@@ -61,24 +83,28 @@
             margin: 0;
             padding: 0;
         }
+
         .container {
             max-width: 600px;
-            margin: 50px auto;
+            margin: 0px auto;
             background-color: #ffffff;
             border-radius: 4px;
             padding: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            min-height: 100vh;
         }
+
         h1 {
             text-align: center;
             font-weight: 500;
             margin-bottom: 1.5rem;
         }
+
         #add-todo {
             display: flex;
             align-items: center;
             margin-bottom: 1.5rem;
         }
+
         #todo-input {
             flex-grow: 1;
             padding: 10px;
@@ -87,6 +113,7 @@
             outline: none;
             font-size: 1rem;
         }
+
         #submit-button {
             background-color: #4CAF50;
             border: none;
@@ -101,12 +128,15 @@
             border-radius: 4px;
             transition: background-color 0.3s;
         }
+
         #submit-button:hover {
             background-color: #3d8b40;
         }
+
         ul {
             padding: 0;
         }
+
         li {
             list-style-type: none;
             border-bottom: 1px solid #ddd;
@@ -114,13 +144,16 @@
             display: flex;
             align-items: center;
         }
+
         input[type="checkbox"] {
             margin-right: 12px;
         }
+
         .tabs {
             display: flex;
             margin-bottom: 24px;
         }
+
         .tab {
             flex-grow: 1;
             text-align: center;
@@ -131,36 +164,56 @@
             border-radius: 4px;
             transition: background-color 0.3s;
         }
+
         .tab:not(.active):hover {
             background-color: #ddd;
         }
+
         .active {
             background-color: #4CAF50;
             color: white;
         }
+
         .accordion {
-        background-color: transparent;
-        color: #444;
-        cursor: pointer;
-        width: 100%;
-        border: none;
-        text-align: left;
-        outline: none;
-        font-size: 15px;
-        transition: 0.4s;
-    }
-        .accordion-header {
-            font-weight: bold;
-            border-radius: 4px 4px 0 0;
-            padding: 18px;
+            background-color: transparent;
+            color: #444;
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
         }
+
+        .accordion-header {
+            font-size: 1.25rem;
+            font-weight: 500;
+            background-color: #ffffff;
+            padding: 10px 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .accordion-header:hover {
+            background-color: #ffffff;
+        }
+
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.2s ease-out;
-            background-color: transparent;
-            border-radius: 0 0 4px 4px;
+            padding: 0 18px;
+            transition: max-height 0.2s ease-out, padding 0.2s ease-out, box-shadow 0.2s ease-out;
+            background-color: #ffffff;
+            border: 1px solid #f8f8f8;
+            /* 添加这一行，设置边框颜色 */
+            border-radius: 5px;
+            /* 添加这一行，设置圆角矩形 */
         }
+
 
 
         .accordion-content ul {
@@ -175,9 +228,11 @@
             display: flex;
             align-items: center;
         }
+
         .accordion-content.show {
             max-height: 1000px;
         }
+
         .delete-button {
             background-color: #f44336;
             border: none;
@@ -211,6 +266,7 @@
         .delete-all-button:hover {
             background-color: #da1e0a;
         }
+
         .quick-inputs {
             opacity: 0;
             position: absolute;
@@ -240,144 +296,158 @@
             padding: 5px 10px;
             text-align: left;
             width: 100%;
-            border-bottom: none; /* 移除底部边框 */
+            border-bottom: none;
+            /* 移除底部边框 */
         }
+
         @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
-    }
+            0% {
+                opacity: 0;
+            }
 
-    @keyframes fadeOut {
-        0% {
-            opacity: 1;
+            100% {
+                opacity: 1;
+            }
         }
-        100% {
-            opacity: 0;
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
-    }
-    .alert {
-        position: absolute;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 20px;
-        background-color: #4CAF50;
-        color: white;
-        border-radius: 8px;
-        z-index: 9999;
-        animation: fadeIn 0.5s linear 1 forwards, fadeOut 0.5s linear 1s 1 forwards;
-    }
-            </style>
-            </head>
-            <body>
-                <div class="container">
-                <h1>Todo List</h1>
-                <div id="add-todo" style="position: relative;">
-                    <input type="text" id="todo-input" placeholder="请输入待办事项...">
-                    <button id="submit-button">+</button>
-                    <div id="quick-inputs" class="quick-inputs"></div>
-                </div>
-                
-                <div class="tabs">
-                <div id="tab-todo" class="tab active">待办事项</div>
-                <div id="tab-done" class="tab">已完成</div>
-                <div id="tab-csv" class="tab">CSV 数据</div>
-                </div>
-                <ul id="todo-list"></ul>
-                </div>
-    
-                <script>
-                    const todoInput = document.getElementById('todo-input');
-                    const submitButton = document.getElementById('submit-button');
-                    const todoList = document.getElementById('todo-list');
-                    const tabTodo = document.getElementById('tab-todo');
-                    const tabDone = document.getElementById('tab-done');
-                    const apiUrl = 'http://8.130.73.40:2172'
-                    todoInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    addTodo();
-                        }
-                    });
-    
-    
-    
-                    function addTodo() {
-                        const todoText = todoInput.value.trim();
-                        if (todoText) {
-                            fetch(`${apiUrl}/todos`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({ text: todoText, done: false, date: new Date().toISOString() })
-                            }).then(res => res.json()).then(() => {
-                                todoInput.value = '';
-                                updateTodoList();
-                            });
-                        }
-                    }
-    
-                    let currentTab = 'todo';
-                    tabTodo.addEventListener('click', () => {
-                        currentTab = 'todo';
-                        tabTodo.classList.add('active');
-                        tabDone.classList.remove('active');
-                        updateTodoList();
-                    });
-                    
-                    tabDone.addEventListener('click', () => {
-                        currentTab = 'done';
-                        tabTodo.classList.remove('active');
-                        tabDone.classList.add('active');
-                        updateTodoList();
-                    });
-                    
-                    submitButton.addEventListener('click', () => {
-                        const todoText = todoInput.value.trim();
-                        if (todoText) {
-                            fetch(`${apiUrl}/todos`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({ text: todoText, done: false, date: new Date().toISOString() })
-                            }).then(res => res.json()).then(updateTodoList);
-                        }
-                    });
-                    function groupByDate(todos) {
-                    const grouped = {};
-                    todos.forEach(todo => {
-                        const date = new Date(todo.date);
-                        date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-                        const localDateString = date.toISOString().split('T')[0];
-                        
-                        if (!grouped[localDateString]) {
-                            grouped[localDateString] = [];
-                        }
-                        grouped[localDateString].push(todo);
-                    });
 
-                    // 按日期排序
-                    const sortedDates = Object.keys(grouped).sort((a, b) => {
-                        const dateA = new Date(a);
-                        const dateB = new Date(b);
-                        return dateA - dateB;
-                    });
+        .alert {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            z-index: 9999;
+            animation: fadeIn 0.5s linear 1 forwards, fadeOut 0.5s linear 1s 1 forwards;
+        }
+    </style>
+</head>
 
-                    const sortedGrouped = {};
-                    sortedDates.forEach(date => {
-                        sortedGrouped[date] = grouped[date];
-                    });
+<body>
+    <div class="container">
+        <h1>Todo List</h1>
+        <div id="add-todo" style="position: relative;">
+            <input type="text" id="todo-input" placeholder="请输入待办事项...">
+            <button id="submit-button">Add</button>
+            <div id="quick-inputs" class="quick-inputs"></div>
+        </div>
+        <div class="tabs">
+            <div id="tab-todo" class="tab active">待办事项</div>
+            <div id="tab-done" class="tab">已完成</div>
+            <div id="tab-csv" class="tab">CSV 数据</div>
+        </div>
+        <ul id="todo-list"></ul>
+    </div>
+    <script>
+        const todoInput = document.getElementById('todo-input');
+        const submitButton = document.getElementById('submit-button');
+        const todoList = document.getElementById('todo-list');
+        const tabTodo = document.getElementById('tab-todo');
+        const tabDone = document.getElementById('tab-done');
+        const apiUrl = 'http://8.130.73.40:2172'
 
-                    return sortedGrouped;
+        todoInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                addTodo();
+            }
+        });
+
+
+
+        function addTodo() {
+            const todoText = todoInput.value.trim();
+            if (todoText) {
+                fetch(`${apiUrl}/todos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: todoText, done: false, date: new Date().toISOString() })
+                }).then(res => res.json()).then(() => {
+                    todoInput.value = '';
+                    updateTodoList();
+                });
+            }
+        }
+
+
+        let currentTab = 'todo';
+        tabTodo.addEventListener('click', () => {
+            currentTab = 'todo';
+            tabTodo.classList.add('active');
+            tabDone.classList.remove('active');
+            updateTodoList();
+        });
+
+        tabDone.addEventListener('click', () => {
+            currentTab = 'done';
+            tabTodo.classList.remove('active');
+            tabDone.classList.add('active');
+            updateTodoList();
+        });
+
+        submitButton.addEventListener('click', () => {
+            const todoText = todoInput.value.trim();
+            if (todoText) {
+                fetch(`${apiUrl}/todos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: todoText, done: false, date: new Date().toISOString() })
+                }).then(res => res.json()).then(() => {
+                    todoInput.value = '';
+                    updateTodoList();
+                    showAlert('Added successfully!');
+                });
+            } else {
+                showAlert('Please enter a non-empty text.');
+            }
+        });
+
+
+        function groupByDate(todos) {
+            const grouped = {};
+            todos.forEach(todo => {
+                const date = new Date(todo.date);
+                date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+                const localDateString = date.toISOString().split('T')[0];
+
+                if (!grouped[localDateString]) {
+                    grouped[localDateString] = [];
                 }
+                grouped[localDateString].push(todo);
+            });
 
-                function createAccordionItem(date, todos) {
-                    return `
+            // 按日期排序
+            const sortedDates = Object.keys(grouped).sort((a, b) => {
+                const dateA = new Date(a);
+                const dateB = new Date(b);
+                return dateA - dateB;
+            });
+
+            const sortedGrouped = {};
+            sortedDates.forEach(date => {
+                sortedGrouped[date] = grouped[date];
+            });
+
+            return sortedGrouped;
+        }
+
+        function createAccordionItem(date, todos) {
+            return `
                         <div class="accordion">
                             <div class="accordion-header">
                                 ${date}
@@ -396,142 +466,176 @@
                             </div>
                         </div>
                     `;
-                }
-    
-    
-                    
-                    async function updateTodoList() {
-                        if (currentTab === 'csv') {
-        const res = await fetch(`${apiUrl}/csv`);
-        const data = await res.text();
-        todoList.innerHTML = `<pre>${data}</pre>`;
-    } else {
-                        const res = await fetch(`${apiUrl}/todos`);
-                        const data = await res.json();
-                        const filteredTodos = data.todos.map((todo, index) => ({ ...todo, index })).filter(todo => todo.done === (currentTab === 'done'));
-                        const groupedTodos = groupByDate(filteredTodos);
-                        todoList.innerHTML = Object.entries(groupedTodos).map(([date, todos]) => createAccordionItem(date, todos)).join('');
-    
-                        const accordionHeaders = document.querySelectorAll('.accordion-header');
-                        accordionHeaders.forEach(header => {
-                            header.addEventListener('click', () => {
-                                const content = header.nextElementSibling;
-                                if (content.style.maxHeight) {
-                                    content.style.maxHeight = null;
-                                    content.style.padding = null;
-                                    content.style.boxShadow = null;
-                                } else {
-                                    content.style.maxHeight = content.scrollHeight + 'px';
-                                    content.style.padding = '18px';
-                                    content.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)';
-                                }
-                            });
-                        });
-    
-                        
-                        const checkboxes = document.querySelectorAll('#todo-list input[type="checkbox"]');
-                        checkboxes.forEach(checkbox => {
-                            checkbox.addEventListener('change', async (e) => {
-                                const index = parseInt(e.target.getAttribute('data-index'), 10);
-                                const updatedTodo = { ...data.todos[index], done: e.target.checked };
-                                const response = await fetch(`${apiUrl}/todos/${index}`, {
-                                    method: 'PUT',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify(updatedTodo)
-                                });
-                                if (response.ok) {
-                                    updateTodoList();
-                                }
-                            });
-                        });
-                        const deleteButtons = document.querySelectorAll('.delete-button');
-                        deleteButtons.forEach(button => {
-                            button.addEventListener('click', async (e) => {
-                                const index = parseInt(e.target.getAttribute('data-index'), 10);
-                                if (confirm('Delete it?')) {
-                                    const response = await fetch(`${apiUrl}/todos/${index}`, {
-                                        method: 'DELETE'
-                                    });
-                                    if (response.ok) {
-                                        updateTodoList();
-                                    }
-                                }
-                            });
-                        });
-                        const deleteAllButtons = document.querySelectorAll('.delete-all-button');
-    
-    
-                        deleteAllButtons.forEach(button => {
-    button.addEventListener('click', async (e) => {
-        const date = e.target.getAttribute('data-date');
-        if (confirm(`Delete all todos for the date ${date}?`)) {
-            const formattedDate = new Date(date).toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
-            const response = await fetch(`${apiUrl}/todos/delete_all/${formattedDate}`, {
-                method: 'DELETE'
-            });
-            if (response.ok) {
-                updateTodoList();
-                showAlert('Successfully!');
-            } else {
-                const responseData = await response.json();
-                if (responseData.warning) {
-                    alert(responseData.warning);
-                }
-            }
         }
-    });
-});
 
 
-    
-                    }
+
+        async function updateTodoList() {
+
+            // Step 1: Add the expandedDates array
+            const expandedDates = [];
+
+            // Step 2: Collect the dates of expanded accordions
+            const expandedAccordionContents = document.querySelectorAll('.accordion-content');
+            expandedAccordionContents.forEach(content => {
+                if (content.style.maxHeight) {
+                    const header = content.previousElementSibling;
+                    const date = header.textContent.split(' ')[0];
+                    expandedDates.push(date);
                 }
-                    document.addEventListener('DOMContentLoaded', () => {
-                        updateTodoList();
+            });
+            if (currentTab === 'csv') {
+                const res = await fetch(`${apiUrl}/csv`);
+                const data = await res.text();
+                todoList.innerHTML = `<pre>${data}</pre>`;
+            } else {
+                const res = await fetch(`${apiUrl}/todos`);
+                const data = await res.json();
+                const filteredTodos = data.todos.map((todo, index) => ({ ...todo, index })).filter(todo => todo.done === (currentTab === 'done'));
+                const groupedTodos = groupByDate(filteredTodos);
+                todoList.innerHTML = Object.entries(groupedTodos).map(([date, todos]) => createAccordionItem(date, todos)).join('');
+
+                const accordionHeaders = document.querySelectorAll('.accordion-header');
+                accordionHeaders.forEach(header => {
+                    header.addEventListener('click', () => {
+                        const content = header.nextElementSibling;
+                        if (content.style.maxHeight) {
+                            content.style.maxHeight = null;
+                            content.style.padding = null;
+                            content.style.boxShadow = null;
+                        } else {
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                            content.style.padding = '18px';
+                            content.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)';
+                        }
                     });
-                    const quickInputs = document.getElementById('quick-inputs');
-                    const quickInputOptions = ['快捷选项1', '快捷选项2', '快捷选项3'];
-    
-                    quickInputOptions.forEach(option => {
-                        const button = document.createElement('button');
-                        button.textContent = option;
-                        button.addEventListener('click', () => {
-                            todoInput.value = button.textContent;
+                });
+
+                const checkboxes = document.querySelectorAll('#todo-list input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', async (e) => {
+                        const index = parseInt(e.target.getAttribute('data-index'), 10);
+                        const updatedTodo = { ...data.todos[index], done: e.target.checked };
+                        const response = await fetch(`${apiUrl}/todos/${index}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(updatedTodo)
                         });
-                        quickInputs.appendChild(button);
-                    });
-    
-                    todoInput.addEventListener('focus', () => {
-                        quickInputs.classList.add('show');
-                    });
-    
-                    todoInput.addEventListener('blur', () => {
-                        setTimeout(() => {
-                            quickInputs.classList.remove('show');
-                        }, 150);
-                    });
-                    const tabCsv = document.getElementById('tab-csv');
-                    tabCsv.addEventListener('click', () => {
-                        currentTab = 'csv';
-                        tabTodo.classList.remove('active');
-                        tabDone.classList.remove('active');
-                        tabCsv.classList.add('active');
-                        updateTodoList();
-                    });
-                    function showAlert(message, timeout = 3000) {
-    const alertElement = document.createElement('div');
-    alertElement.className = 'alert';
-    alertElement.textContent = message;
-    document.body.appendChild(alertElement);
 
-    setTimeout(() => {
-        alertElement.remove();
-    }, timeout);
-}
+                        if (response.ok) {
+                            // Get the parent <li> element
+                            const listItem = e.target.closest('li');
+                            // Add the fade-out class to the <li> element
+                            listItem.classList.add('fade-out');
+                            // Wait for the animation to complete, then update the todo list
+                            setTimeout(() => {
+                                updateTodoList();
+                            }, 500);
+                        }
+                    });
+                });
 
-                    </script>
-                </body>
-                </html>
-    
+                const deleteButtons = document.querySelectorAll('.delete-button');
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const index = parseInt(e.target.getAttribute('data-index'), 10);
+                        if (confirm('Delete it?')) {
+                            const response = await fetch(`${apiUrl}/todos/${index}`, {
+                                method: 'DELETE'
+                            });
+                            if (response.ok) {
+                                updateTodoList();
+                            }
+                        }
+                    });
+                });
+                const deleteAllButtons = document.querySelectorAll('.delete-all-button');
+
+
+                deleteAllButtons.forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const date = e.target.getAttribute('data-date');
+                        if (confirm(`Delete all todos for the date ${date}?`)) {
+                            const formattedDate = new Date(date).toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+                            const response = await fetch(`${apiUrl}/todos/delete_all/${formattedDate}`, {
+                                method: 'DELETE'
+                            });
+                            if (response.ok) {
+                                updateTodoList();
+                                showAlert('Deleted Successfully');
+                            } else {
+                                const responseData = await response.json();
+                                if (responseData.warning) {
+                                    alert(responseData.warning);
+                                }
+                            }
+                        }
+                    });
+                });
+
+
+
+            }
+            expandedDates.forEach(date => {
+                const headers = document.querySelectorAll('.accordion-header');
+                headers.forEach(header => {
+                    if (header.textContent.startsWith(date)) {
+                        const content = header.nextElementSibling;
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        content.style.padding = '18px';
+                        content.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)';
+                    }
+                });
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTodoList();
+        });
+        const quickInputs = document.getElementById('quick-inputs');
+        const quickInputOptions = ['[ Work ] : ', '[ Paper ] : '];
+
+        quickInputOptions.forEach(option => {
+            const button = document.createElement('button');
+            button.textContent = option;
+            button.addEventListener('click', () => {
+                todoInput.value = button.textContent;
+            });
+            quickInputs.appendChild(button);
+        });
+
+        todoInput.addEventListener('focus', () => {
+            quickInputs.classList.add('show');
+        });
+
+        todoInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                quickInputs.classList.remove('show');
+            }, 150);
+        });
+        const tabCsv = document.getElementById('tab-csv');
+        tabCsv.addEventListener('click', () => {
+            currentTab = 'csv';
+            tabTodo.classList.remove('active');
+            tabDone.classList.remove('active');
+            tabCsv.classList.add('active');
+            updateTodoList();
+        });
+        function showAlert(message, timeout = 3000) {
+            const alertElement = document.createElement('div');
+            alertElement.className = 'alert';
+            alertElement.textContent = message;
+            document.body.appendChild(alertElement);
+            document.addEventListener('DOMContentLoaded', () => {
+                updateTodoList();
+            });
+            setTimeout(() => {
+                alertElement.remove();
+            }, timeout);
+        }
+
+    </script>
+</body>
+
+</html>
