@@ -417,34 +417,35 @@
             }
         });
 
-
         function groupByDate(todos) {
-            const grouped = {};
-            todos.forEach(todo => {
-                const date = new Date(todo.date);
-                date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-                const localDateString = date.toISOString().split('T')[0];
+                const grouped = {};
+                todos.forEach(todo => {
+                    const date = new Date(todo.date);
+                    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+                    date.setHours(date.getHours() - 8); // 减去 8 个小时
+                    const localDateString = date.toISOString().split('T')[0];
+                    console.log(date);
+                    if (!grouped[localDateString]) {
+                        grouped[localDateString] = [];
+                    }
+                    grouped[localDateString].push(todo);
+                });
 
-                if (!grouped[localDateString]) {
-                    grouped[localDateString] = [];
-                }
-                grouped[localDateString].push(todo);
-            });
+                // 按日期排序
+                const sortedDates = Object.keys(grouped).sort((a, b) => {
+                    const dateA = new Date(a);
+                    const dateB = new Date(b);
+                    return dateA - dateB;
+                });
 
-            // 按日期排序
-            const sortedDates = Object.keys(grouped).sort((a, b) => {
-                const dateA = new Date(a);
-                const dateB = new Date(b);
-                return dateA - dateB;
-            });
+                const sortedGrouped = {};
+                sortedDates.forEach(date => {
+                    sortedGrouped[date] = grouped[date];
+                });
 
-            const sortedGrouped = {};
-            sortedDates.forEach(date => {
-                sortedGrouped[date] = grouped[date];
-            });
+                return sortedGrouped;
+            }
 
-            return sortedGrouped;
-        }
 
         function createAccordionItem(date, todos) {
             return `
