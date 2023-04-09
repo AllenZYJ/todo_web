@@ -332,6 +332,32 @@
             z-index: 9999;
             animation: fadeIn 0.5s linear 1 forwards, fadeOut 0.5s linear 1s 1 forwards;
         }
+
+        .csv-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 0px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .csv-table th,
+        .csv-table td {
+            border: none;
+            padding: 8px;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .csv-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .csv-table tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
     </style>
 </head>
 
@@ -350,6 +376,8 @@
         </div>
         <ul id="todo-list"></ul>
     </div>
+    <span style="font-size:16px;"><span style="font-family:lucida sans unicode,lucida grande,sans-serif;">
+    
     <script>
         const todoInput = document.getElementById('todo-input');
         const submitButton = document.getElementById('submit-button');
@@ -417,6 +445,7 @@
             }
         });
 
+
         function groupByDate(todos) {
                 const grouped = {};
                 todos.forEach(todo => {
@@ -446,7 +475,6 @@
                 return sortedGrouped;
             }
 
-
         function createAccordionItem(date, todos) {
             return `
                         <div class="accordion">
@@ -470,25 +498,30 @@
         }
 
 
-
         async function updateTodoList() {
-
-            // Step 1: Add the expandedDates array
-            const expandedDates = [];
-
-            // Step 2: Collect the dates of expanded accordions
-            const expandedAccordionContents = document.querySelectorAll('.accordion-content');
-            expandedAccordionContents.forEach(content => {
-                if (content.style.maxHeight) {
-                    const header = content.previousElementSibling;
-                    const date = header.textContent.split(' ')[0];
-                    expandedDates.push(date);
-                }
-            });
             if (currentTab === 'csv') {
                 const res = await fetch(`${apiUrl}/csv`);
                 const data = await res.text();
-                todoList.innerHTML = `<pre>${data}</pre>`;
+                const csvArray = data.split('\n').map(row => row.split(',')).filter(row => row.length > 1 && row[0] !== '');
+
+                let tableHtml = '<table class="csv-table">';
+                tableHtml += '<thead><tr>';
+                csvArray[0].forEach(header => {
+                    tableHtml += `<th>${header}</th>`;
+                });
+                tableHtml += '</tr></thead><tbody>';
+
+                for (let i = 1; i < csvArray.length; i++) {
+                    tableHtml += '<tr>';
+                    csvArray[i].forEach(cell => {
+                        tableHtml += `<td>${cell}</td>`;
+                    });
+                    tableHtml += '</tr>';
+                }
+
+                tableHtml += '</tbody></table>';
+
+                todoList.innerHTML = tableHtml;
             } else {
                 const res = await fetch(`${apiUrl}/todos`);
                 const data = await res.json();
@@ -637,6 +670,7 @@
         }
 
     </script>
+    
 </body>
 
 </html>
